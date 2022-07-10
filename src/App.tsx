@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/Landing';
 import SignupPage from './pages/Signup';
 import SignInPage from './pages/Signin';
+import PostDetailPage from './pages/PostDetail';
+import UserDetailPage from './pages/UserDetail';
 
 function App() {
   return (
@@ -15,6 +17,12 @@ function App() {
           </Route>
           <Route path='signin'>
             <Route index element={<SignInPage />} />
+          </Route>
+          <Route path='/post'>
+            <Route path=':id' element={<PostDetailPage />} />
+          </Route>
+          <Route path='/user'>
+            <Route path=':id' element={<UserDetailPage />} />
           </Route>
         </Route>
       </Routes>
