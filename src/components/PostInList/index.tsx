@@ -9,6 +9,7 @@ import {
   ThumbUpIcon,
 } from '@heroicons/react/solid';
 import { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import { DEFAULT_PROFILE_PICTURE } from '../../constants';
 import { classNames } from '../../helpers';
 import { Post } from '../../interfaces';
@@ -41,19 +42,14 @@ const PostInList = ({
             </div>
             <div className='flex-1 min-w-0'>
               <p className='text-sm font-medium text-gray-900'>
-                <a
-                  // href={question.author.href}
-                  className='hover:underline'
-                >
-                  {post.title}
-                </a>
+                <Link to={`/user/${post.user.id}`} className='hover:underline'>
+                  {post.user.firstName} {post.user.lastName}
+                </Link>
               </p>
               <p className='text-sm text-gray-500'>
-                <a className='hover:underline'>
-                  <time dateTime={post.createdAt.toString()}>
-                    {post.createdAt.toString()}
-                  </time>
-                </a>
+                <time dateTime={post.createdAt.toString()}>
+                  {post.createdAt.toString()}
+                </time>
               </p>
             </div>
             <div className='flex self-center flex-shrink-0'>
