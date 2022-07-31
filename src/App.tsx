@@ -5,6 +5,7 @@ import SignupPage from './pages/Signup';
 import SignInPage from './pages/Signin';
 import PostDetailPage from './pages/PostDetail';
 import UserDetailPage from './pages/UserDetail';
+import CreatePostPage from './pages/CreatePost';
 
 function App() {
   return (
@@ -23,6 +24,9 @@ function App() {
           </Route>
           <Route path='/user'>
             <Route path=':id' element={<UserDetailPage />} />
+          </Route>
+          <Route path='/create'>
+            <Route index element={<CreatePostPage />} />
           </Route>
         </Route>
       </Routes>

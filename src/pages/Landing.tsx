@@ -46,12 +46,14 @@ function LandingPage() {
         </div>
       }
     >
-      <LandingTabs />
-      <PostList
-        allPosts={allPosts}
-        currentlyLoggedInUserId={currentlyLoggedInUserId}
-        handleDeletePost={handleDeletePost}
-      />
+      <div className='space-y-4'>
+        <LandingTabs />
+        <PostList
+          allPosts={allPosts}
+          currentlyLoggedInUserId={currentlyLoggedInUserId}
+          handleDeletePost={handleDeletePost}
+        />
+      </div>
     </MainLayout>
   );
 }

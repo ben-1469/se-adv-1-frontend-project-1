@@ -2,13 +2,13 @@ export interface Post {
   id: string;
   createdAt: Date;
   updatedAt: Date;
-  title: string;
-  content: string;
+  title: string; // form
+  content: string; // form
   published: boolean;
   viewCount: number;
   userId: number;
-  groupId: number;
-  tagId: number;
+  groupId: number; // form
+  tagId: number; // form
   group: any;
   tag: any;
   user: any;
@@ -24,4 +24,11 @@ export interface User {
   username: string;
   id: string;
   avatar?: string;
+}
+
+export interface Group {
+  createdAt: Date;
+  updatedAt: Date;
+  id: number;
+  name: string;
 }

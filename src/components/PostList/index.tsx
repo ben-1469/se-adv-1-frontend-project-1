@@ -1,4 +1,5 @@
 import { Post } from '../../interfaces';
+import EmptyState from '../EmptyState';
 import PostInList from '../PostInList';
 
 type Props = {
@@ -13,18 +14,21 @@ const PostList = ({
   handleDeletePost,
 }: Props) => {
   return (
-    <div className='mt-4'>
-      <h1 className='sr-only'>Recent questions</h1>
-      <ul role='list' className='space-y-4'>
-        {allPosts.map((post, index) => (
-          <PostInList
-            post={post}
-            key={index}
-            currentlyLoggedInUserId={currentlyLoggedInUserId}
-            handleDeletePost={handleDeletePost}
-          />
-        ))}
-      </ul>
+    <div>
+      {allPosts.length ? (
+        <ul className='space-y-4'>
+          {allPosts.map((post, index) => (
+            <PostInList
+              post={post}
+              key={index}
+              currentlyLoggedInUserId={currentlyLoggedInUserId}
+              handleDeletePost={handleDeletePost}
+            />
+          ))}
+        </ul>
+      ) : (
+        <EmptyState title='No posts found' subtitle='Please check back later' />
+      )}
     </div>
   );
 };

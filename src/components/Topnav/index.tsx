@@ -3,6 +3,7 @@ import { BellIcon, MenuIcon, SearchIcon, XIcon } from '@heroicons/react/solid';
 import React, { Fragment } from 'react';
 import { classNames } from '../../helpers';
 import { navigation } from '../../constants';
+import { Link } from 'react-router-dom';
 
 type Props = {};
 
@@ -36,13 +37,13 @@ const Topnav = (props: Props) => {
             <div className='relative flex justify-between xl:grid xl:grid-cols-12 lg:gap-8'>
               <div className='flex md:absolute md:left-0 md:inset-y-0 lg:static xl:col-span-2'>
                 <div className='flex items-center flex-shrink-0'>
-                  <a href='#'>
+                  <Link to='/'>
                     <img
                       className='block w-auto h-8'
                       src='https://tailwindui.com/img/logos/workflow-mark.svg?color=rose&shade=500'
                       alt='Workflow'
                     />
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className='flex-1 min-w-0 md:px-8 lg:px-0 xl:col-span-6'>
