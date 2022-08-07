@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import React from 'react';
 import { User } from '../../interfaces';
 
@@ -11,6 +12,11 @@ const UserProfileInfo = ({ user }: Props) => {
       <div className='pb-1 sm:pb-6'>
         <div className='sm:flex-1'>
           <div>
+            <img
+              className='w-40 mb-2 rounded-full shadow-lg'
+              src={user.profilePic}
+              alt=''
+            />
             <div className='flex items-center'>
               <h3 className='text-xl font-bold text-gray-900 sm:text-2xl'>
                 {user.firstName} {user.lastName}
@@ -29,11 +35,7 @@ const UserProfileInfo = ({ user }: Props) => {
             Bio
           </dt>
           <dd className='mt-1 text-sm text-gray-900 sm:col-span-2'>
-            <p>
-              Enim feugiat ut ipsum, neque ut. Tristique mi id elementum
-              praesent. Gravida in tempus feugiat netus enim aliquet a, quam
-              scelerisque. Dictumst in convallis nec in bibendum aenean arcu.
-            </p>
+            <p>{user.bio}</p>
           </dd>
         </div>
         <div>
@@ -41,7 +43,7 @@ const UserProfileInfo = ({ user }: Props) => {
             Location
           </dt>
           <dd className='mt-1 text-sm text-gray-900 sm:col-span-2'>
-            New York, NY, USA
+            {user.location}
           </dd>
         </div>
         <div>
@@ -49,7 +51,7 @@ const UserProfileInfo = ({ user }: Props) => {
             Website
           </dt>
           <dd className='mt-1 text-sm text-gray-900 sm:col-span-2'>
-            ashleyporter.com
+            <a href={user.website}>{user.website}</a>
           </dd>
         </div>
         <div>
@@ -57,7 +59,9 @@ const UserProfileInfo = ({ user }: Props) => {
             Birthday
           </dt>
           <dd className='mt-1 text-sm text-gray-900 sm:col-span-2'>
-            <time dateTime='1988-06-23'> June 23, 1988 </time>
+            <time dateTime={user.dob}>
+              {dayjs(user.dob).format('YYYY-MM-DD')}
+            </time>
           </dd>
         </div>
       </dl>

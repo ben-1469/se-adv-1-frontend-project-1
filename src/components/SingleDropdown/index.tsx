@@ -47,7 +47,7 @@ export default function SingleDropdown({
         <Combobox.Input
           className='w-full py-2 pl-3 pr-10 bg-white border border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 sm:text-sm'
           onChange={(event) => setQuery(event.target.value)}
-          displayValue={(option: Option) => option.name}
+          displayValue={(option: Option) => (option ? option.name : '')}
           placeholder={placeholder}
         />
         <Combobox.Button className='absolute inset-y-0 right-0 flex items-center px-2 rounded-r-md focus:outline-none'>
@@ -63,7 +63,7 @@ export default function SingleDropdown({
                 className={({ active }) =>
                   classNames(
                     'relative cursor-default select-none py-2 pl-8 pr-4',
-                    active ? 'bg-red-600 text-white' : 'text-gray-900',
+                    active ? 'bg-red-600 text-white' : 'text-gray-900'
                   )
                 }
               >
@@ -72,7 +72,7 @@ export default function SingleDropdown({
                     <span
                       className={classNames(
                         'block truncate',
-                        selected && 'font-semibold',
+                        selected && 'font-semibold'
                       )}
                     >
                       {option.name}
@@ -82,7 +82,7 @@ export default function SingleDropdown({
                       <span
                         className={classNames(
                           'absolute inset-y-0 left-0 flex items-center pl-1.5',
-                          active ? 'text-white' : 'text-red-600',
+                          active ? 'text-white' : 'text-red-600'
                         )}
                       >
                         <CheckIcon className='w-5 h-5' aria-hidden='true' />
