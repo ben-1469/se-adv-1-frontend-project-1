@@ -7,6 +7,7 @@ import PostList from '../components/PostList';
 import Sidenav from '../components/Sidenav';
 import MainLayout from '../layout/MainLayout';
 import PostListPanel from '../components/PostListPanel';
+import GroupList from '../components/GroupList';
 
 function LandingPage() {
   const [allPosts, setAllPosts] = useState<Post[]>([]);
@@ -23,6 +24,8 @@ function LandingPage() {
     const groupData = await groupResponse.json();
     const postData = await postResponse.json();
     const userData = await userResponse.json();
+
+    console.log(groupData);
 
     setAllUsers(userData);
     setAllPosts(postData);
@@ -44,7 +47,12 @@ function LandingPage() {
 
   return (
     <MainLayout
-      leftNav={<Sidenav groups={allGroups} />}
+      leftNav={
+        <div className='divide-y divide-gray-300'>
+          <Sidenav />
+          <GroupList groups={allGroups} />
+        </div>
+      }
       rightNav={
         <div className='space-y-4'>
           <UsersList title='Who to friend' users={allUsers} />
