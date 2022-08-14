@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Post, User } from '../interfaces';
+import { Group, Post, User } from '../interfaces';
 import UsersList from '../components/UsersList';
 import LandingTabs from '../components/LandingTabs';
 import PostList from '../components/PostList';
@@ -11,16 +11,22 @@ import PostListPanel from '../components/PostListPanel';
 function LandingPage() {
   const [allPosts, setAllPosts] = useState<Post[]>([]);
   const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [allGroups, setAllGroups] = useState<Group[]>([]);
+
   const navigate = useNavigate();
   const currentlyLoggedInUserId = window.localStorage.getItem('userId');
 
   const fetchData = async () => {
     const postResponse = await fetch('http://localhost:4000/posts');
     const userResponse = await fetch('http://localhost:4000/users');
+    const groupResponse = await fetch('http://localhost:4000/groups');
+    const groupData = await groupResponse.json();
     const postData = await postResponse.json();
     const userData = await userResponse.json();
+
     setAllUsers(userData);
     setAllPosts(postData);
+    setAllGroups(groupData);
   };
 
   useEffect(() => {
@@ -38,7 +44,7 @@ function LandingPage() {
 
   return (
     <MainLayout
-      leftNav={<Sidenav />}
+      leftNav={<Sidenav groups={allGroups} />}
       rightNav={
         <div className='space-y-4'>
           <UsersList title='Who to friend' users={allUsers} />

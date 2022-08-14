@@ -1,20 +1,12 @@
 import { navigation } from '../../constants';
 import { classNames } from '../../helpers';
+import { Group } from '../../interfaces';
 
-type Props = {};
+type Props = {
+  groups: Group[];
+};
 
-const communities = [
-  { name: 'Movies', href: '#' },
-  { name: 'Food', href: '#' },
-  { name: 'Sports', href: '#' },
-  { name: 'Animals', href: '#' },
-  { name: 'Science', href: '#' },
-  { name: 'Dinosaurs', href: '#' },
-  { name: 'Talents', href: '#' },
-  { name: 'Gaming', href: '#' },
-];
-
-const Sidenav = (props: Props) => {
+const Sidenav = ({ groups }: Props) => {
   return (
     <nav aria-label='Sidebar' className='sticky divide-y divide-gray-300 top-4'>
       <div className='pb-8 space-y-1'>
@@ -48,16 +40,16 @@ const Sidenav = (props: Props) => {
           className='px-3 text-xs font-semibold tracking-wider text-gray-500 uppercase'
           id='communities-headline'
         >
-          My communities
+          Groups
         </p>
         <div className='mt-3 space-y-2' aria-labelledby='communities-headline'>
-          {communities.map((community) => (
+          {groups.map((group) => (
             <a
-              key={community.name}
-              href={community.href}
+              key={group.id}
+              href={`/group/${group.id}`}
               className='flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md group hover:text-gray-900 hover:bg-gray-50'
             >
-              <span className='truncate'>{community.name}</span>
+              <span className='truncate'>{group.name}</span>
             </a>
           ))}
         </div>
