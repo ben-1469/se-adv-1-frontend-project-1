@@ -8,6 +8,7 @@ import {
   StarIcon,
   ThumbUpIcon,
 } from '@heroicons/react/solid';
+import dayjs from 'dayjs';
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { DEFAULT_PROFILE_PICTURE } from '../../constants';
@@ -44,11 +45,22 @@ const PostInList = ({
               <p className='text-sm font-medium text-gray-900'>
                 <Link to={`/user/${post.user.id}`} className='hover:underline'>
                   {post.user.firstName} {post.user.lastName}
-                </Link>
+                </Link>{' '}
+                {post.group?.id && (
+                  <>
+                    posted in{' '}
+                    <Link
+                      to={`/group/${post.group?.id}`}
+                      className='hover:underline'
+                    >
+                      {post.group?.name || 'UnGrouped'}
+                    </Link>
+                  </>
+                )}
               </p>
               <p className='text-sm text-gray-500'>
                 <time dateTime={post.createdAt.toString()}>
-                  {post.createdAt.toString()}
+                  {dayjs(post.createdAt).format('MMM D, YYYY')}
                 </time>
               </p>
             </div>
@@ -80,7 +92,7 @@ const PostInList = ({
                               active
                                 ? 'bg-gray-100 text-gray-900'
                                 : 'text-gray-700',
-                              'flex px-4 py-2 text-sm',
+                              'flex px-4 py-2 text-sm'
                             )}
                           >
                             <StarIcon
@@ -101,7 +113,7 @@ const PostInList = ({
                                 active
                                   ? 'bg-gray-100 text-gray-900'
                                   : 'text-gray-700',
-                                'flex px-4 py-2 text-sm',
+                                'flex px-4 py-2 text-sm'
                               )}
                             >
                               <FlagIcon

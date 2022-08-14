@@ -13,7 +13,7 @@ const UserInList = ({ user }: Props) => {
       <div className='flex-shrink-0'>
         <img
           className='w-8 h-8 rounded-full'
-          src={user?.avatar || DEFAULT_PROFILE_PICTURE}
+          src={user?.profilePic || DEFAULT_PROFILE_PICTURE}
           alt=''
         />
       </div>

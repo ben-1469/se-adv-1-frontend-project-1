@@ -23,7 +23,11 @@ export interface User {
   password: string;
   username: string;
   id: string;
-  avatar?: string;
+  profilePic?: string;
+  bio?: string;
+  location?: string;
+  website?: string;
+  dob?: string;
 }
 
 export interface Group {

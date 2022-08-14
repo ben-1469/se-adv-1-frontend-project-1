@@ -21,13 +21,14 @@ const userNavigation = [
 ];
 
 const Topnav = (props: Props) => {
+  const profilePic = window.localStorage.getItem('profilePic');
   return (
     <Popover
       as='header'
       className={({ open }) =>
         classNames(
           open ? 'fixed inset-0 z-40 overflow-y-auto' : '',
-          'bg-white shadow-sm lg:static lg:overflow-y-visible',
+          'bg-white shadow-sm lg:static lg:overflow-y-visible'
         )
       }
     >
@@ -84,12 +85,6 @@ const Topnav = (props: Props) => {
               <div className='hidden lg:flex lg:items-center lg:justify-end xl:col-span-4'>
                 <a
                   href='#'
-                  className='text-sm font-medium text-gray-900 hover:underline'
-                >
-                  Go Premium
-                </a>
-                <a
-                  href='#'
                   className='flex-shrink-0 p-1 ml-5 text-gray-400 bg-white rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500'
                 >
                   <span className='sr-only'>View notifications</span>
@@ -103,7 +98,7 @@ const Topnav = (props: Props) => {
                       <span className='sr-only'>Open user menu</span>
                       <img
                         className='w-8 h-8 rounded-full'
-                        src={user.imageUrl}
+                        src={profilePic}
                         alt=''
                       />
                     </Menu.Button>
@@ -125,7 +120,7 @@ const Topnav = (props: Props) => {
                               href={item.href}
                               className={classNames(
                                 active ? 'bg-gray-100' : '',
-                                'block py-2 px-4 text-sm text-gray-700',
+                                'block py-2 px-4 text-sm text-gray-700'
                               )}
                             >
                               {item.name}
@@ -137,12 +132,12 @@ const Topnav = (props: Props) => {
                   </Transition>
                 </Menu>
 
-                <a
-                  href='#'
+                <Link
+                  to='/create'
                   className='inline-flex items-center px-4 py-2 ml-6 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500'
                 >
                   New Post
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -158,7 +153,7 @@ const Topnav = (props: Props) => {
                     item.current
                       ? 'bg-gray-100 text-gray-900'
                       : 'hover:bg-gray-50',
-                    'block rounded-md py-2 px-3 text-base font-medium',
+                    'block rounded-md py-2 px-3 text-base font-medium'
                   )}
                 >
                   {item.name}

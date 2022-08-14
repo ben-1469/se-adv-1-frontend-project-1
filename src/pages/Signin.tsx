@@ -34,13 +34,14 @@ const SignInPage = () => {
     try {
       const result = await axios.post(
         'http://localhost:4000/users/login',
-        formData,
+        formData
       );
       if (result.status === 200) {
         console.log('Successfully logged in');
         console.log(result.data);
         window.localStorage.setItem('token', result.data.token);
         window.localStorage.setItem('userId', result.data.userId);
+        window.localStorage.setItem('profilePic', result.data.profilePic);
         navigate('/');
       }
     } catch (error) {

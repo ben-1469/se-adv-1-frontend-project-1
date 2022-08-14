@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import NotFoundPage from '../components/NotFound';
 import PostList from '../components/PostList';
 import UserProfileInfo from '../components/UserProfileInfo';
 import UsersList from '../components/UsersList';
@@ -10,13 +11,15 @@ function UserDetailPage({}) {
   const [friends, setFriends] = React.useState<User[]>([]);
   const [user, setUser] = React.useState<User>();
   const [posts, setPosts] = React.useState<Post[]>([]);
+  const [loading, setLoading] = React.useState(true);
   const location = useLocation();
   const userId = location.pathname.split('/')[2];
   const currentlyLoggedInUserId = window.localStorage.getItem('userId');
 
   const fetchData = React.useCallback(async () => {
+    setLoading(true);
     const friendsResponse = await fetch(
-      `http://localhost:4000/users/${userId}/friends`,
+      `http://localhost:4000/users/${userId}/friends`
     );
     const userResponse = await fetch(`http://localhost:4000/users/${userId}`);
     const postResponse = await fetch(`http://localhost:4000/posts/${userId}`);
@@ -26,6 +29,7 @@ function UserDetailPage({}) {
     setFriends(friendsData);
     setUser(userData);
     setPosts(postData);
+    setLoading(false);
   }, [userId]);
 
   React.useEffect(() => {
@@ -37,20 +41,23 @@ function UserDetailPage({}) {
       method: 'DELETE',
     });
     const data = await response.json();
-    console.log(data);
     fetchData();
   };
 
   return (
     <MainLayout
       leftNav={user && <UserProfileInfo user={user} />}
-      rightNav={<UsersList users={friends} title='Friends' />}
+      rightNav={user && <UsersList users={friends} title='Friends' />}
     >
-      <PostList
-        allPosts={posts}
-        currentlyLoggedInUserId={currentlyLoggedInUserId}
-        handleDeletePost={handleDeletePost}
-      />
+      {!user && !loading ? (
+        <NotFoundPage type='user' />
+      ) : (
+        <PostList
+          allPosts={posts}
+          currentlyLoggedInUserId={currentlyLoggedInUserId}
+          handleDeletePost={handleDeletePost}
+        />
+      )}
     </MainLayout>
   );
 }
