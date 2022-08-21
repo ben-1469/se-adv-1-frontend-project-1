@@ -23,7 +23,7 @@ const GroupList = ({ groups }: Props) => {
           >
             <span className='truncate'>{group.name}</span>
             <span className='ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800'>
-              4
+              {group?.posts?.length}
             </span>
           </a>
         ))}

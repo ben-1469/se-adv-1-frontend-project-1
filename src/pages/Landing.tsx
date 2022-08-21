@@ -25,8 +25,6 @@ function LandingPage() {
     const postData = await postResponse.json();
     const userData = await userResponse.json();
 
-    console.log(groupData);
-
     setAllUsers(userData);
     setAllPosts(postData);
     setAllGroups(groupData);

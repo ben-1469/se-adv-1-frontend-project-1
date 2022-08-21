@@ -11,7 +11,7 @@ export interface Post {
   tagId: number; // form
   group: any;
   tag: any;
-  user: any;
+  user: User;
   comments: [];
   likes: [];
 }
@@ -35,4 +35,5 @@ export interface Group {
   updatedAt: Date;
   id: number;
   name: string;
+  posts: Post[];
 }

@@ -4,6 +4,9 @@ import React, { Fragment } from 'react';
 import { classNames } from '../../helpers';
 import { navigation } from '../../constants';
 import { Link } from 'react-router-dom';
+import SearchBox from '../SearchBox';
+import axios from 'axios';
+import { Post } from '../../interfaces';
 
 type Props = {};
 
@@ -22,13 +25,29 @@ const userNavigation = [
 
 const Topnav = (props: Props) => {
   const profilePic = window.localStorage.getItem('profilePic');
+  const [query, setQuery] = React.useState('');
+  const [data, setData] = React.useState<Post[]>([]);
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
+  const fetchData = async () => {
+    const response = await axios.post(
+      'http://localhost:4000/posts/search?query=' + query.toString(),
+    );
+    setData(response.data);
+  };
+
+  React.useEffect(() => {
+    fetchData();
+  }, [query]);
+
   return (
     <Popover
       as='header'
       className={({ open }) =>
         classNames(
           open ? 'fixed inset-0 z-40 overflow-y-auto' : '',
-          'bg-white shadow-sm lg:static lg:overflow-y-visible'
+          'bg-white shadow-sm lg:static lg:overflow-y-visible',
         )
       }
     >
@@ -50,24 +69,11 @@ const Topnav = (props: Props) => {
               <div className='flex-1 min-w-0 md:px-8 lg:px-0 xl:col-span-6'>
                 <div className='flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0'>
                   <div className='w-full'>
-                    <label htmlFor='search' className='sr-only'>
-                      Search
-                    </label>
-                    <div className='relative'>
-                      <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
-                        <SearchIcon
-                          className='w-5 h-5 text-gray-400'
-                          aria-hidden='true'
-                        />
-                      </div>
-                      <input
-                        id='search'
-                        name='search'
-                        className='block w-full py-2 pl-10 pr-3 text-sm placeholder-gray-500 bg-white border border-gray-300 rounded-md focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-rose-500 focus:border-rose-500 sm:text-sm'
-                        placeholder='Search'
-                        type='search'
-                      />
-                    </div>
+                    <SearchBox
+                      data={data}
+                      handleInputChange={handleInputChange}
+                      query={query}
+                    />
                   </div>
                 </div>
               </div>
@@ -120,7 +126,7 @@ const Topnav = (props: Props) => {
                               href={item.href}
                               className={classNames(
                                 active ? 'bg-gray-100' : '',
-                                'block py-2 px-4 text-sm text-gray-700'
+                                'block py-2 px-4 text-sm text-gray-700',
                               )}
                             >
                               {item.name}
@@ -153,7 +159,7 @@ const Topnav = (props: Props) => {
                     item.current
                       ? 'bg-gray-100 text-gray-900'
                       : 'hover:bg-gray-50',
-                    'block rounded-md py-2 px-3 text-base font-medium'
+                    'block rounded-md py-2 px-3 text-base font-medium',
                   )}
                 >
                   {item.name}
