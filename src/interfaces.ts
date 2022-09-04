@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface Post {
   id: string;
   createdAt: Date;
@@ -36,4 +38,12 @@ export interface Group {
   id: number;
   name: string;
   posts: Post[];
+}
+
+export interface Mood {
+  name: string;
+  value: string;
+  icon: any;
+  iconColor: string;
+  bgColor: string;
 }

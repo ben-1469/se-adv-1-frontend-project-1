@@ -51,7 +51,7 @@ const PostInList = ({
                     posted in{' '}
                     <Link
                       to={`/group/${post.group?.id}`}
-                      className='hover:underline'
+                      className='font-bold text-blue-500 hover:underline'
                     >
                       {post.group?.name || 'UnGrouped'}
                     </Link>
@@ -92,7 +92,7 @@ const PostInList = ({
                               active
                                 ? 'bg-gray-100 text-gray-900'
                                 : 'text-gray-700',
-                              'flex px-4 py-2 text-sm'
+                              'flex px-4 py-2 text-sm',
                             )}
                           >
                             <StarIcon
@@ -113,7 +113,7 @@ const PostInList = ({
                                 active
                                   ? 'bg-gray-100 text-gray-900'
                                   : 'text-gray-700',
-                                'flex px-4 py-2 text-sm'
+                                'flex px-4 py-2 text-sm',
                               )}
                             >
                               <FlagIcon
@@ -131,9 +131,12 @@ const PostInList = ({
               </Menu>
             </div>
           </div>
-          <h2 className='mt-4 text-base font-medium text-gray-900'>
+          <Link
+            to={`/post/${post.id}`}
+            className='block mt-4 text-base font-medium text-gray-900 hover:underline'
+          >
             {post.title}
-          </h2>
+          </Link>
         </div>
         <div
           className='mt-2 space-y-4 text-sm text-gray-700'
