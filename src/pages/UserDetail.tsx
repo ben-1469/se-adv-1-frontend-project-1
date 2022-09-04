@@ -22,7 +22,9 @@ function UserDetailPage({}) {
       `http://localhost:4000/users/${userId}/friends`
     );
     const userResponse = await fetch(`http://localhost:4000/users/${userId}`);
-    const postResponse = await fetch(`http://localhost:4000/posts/${userId}`);
+    const postResponse = await fetch(
+      `http://localhost:4000/posts/user/${userId}`
+    );
     const friendsData = await friendsResponse.json();
     const userData = await userResponse.json();
     const postData = await postResponse.json();

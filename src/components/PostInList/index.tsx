@@ -92,7 +92,7 @@ const PostInList = ({
                               active
                                 ? 'bg-gray-100 text-gray-900'
                                 : 'text-gray-700',
-                              'flex px-4 py-2 text-sm',
+                              'flex px-4 py-2 text-sm'
                             )}
                           >
                             <StarIcon
@@ -113,7 +113,7 @@ const PostInList = ({
                                 active
                                   ? 'bg-gray-100 text-gray-900'
                                   : 'text-gray-700',
-                                'flex px-4 py-2 text-sm',
+                                'flex px-4 py-2 text-sm'
                               )}
                             >
                               <FlagIcon
