@@ -25,6 +25,7 @@ const userNavigation = [
 
 const Topnav = (props: Props) => {
   const profilePic = window.localStorage.getItem('profilePic');
+  const userId = window.localStorage.getItem('userId');
   const [query, setQuery] = React.useState('');
   const [data, setData] = React.useState<Post[]>([]);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,7 +124,11 @@ const Topnav = (props: Props) => {
                         <Menu.Item key={item.name}>
                           {({ active }) => (
                             <a
-                              href={item.href}
+                              href={
+                                item.name === 'Your Profile'
+                                  ? `/user/${userId}`
+                                  : item.href
+                              }
                               className={classNames(
                                 active ? 'bg-gray-100' : '',
                                 'block py-2 px-4 text-sm text-gray-700',

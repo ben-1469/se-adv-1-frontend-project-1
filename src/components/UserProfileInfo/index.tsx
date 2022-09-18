@@ -1,5 +1,6 @@
+import axios from 'axios';
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useRef } from 'react';
 import { User } from '../../interfaces';
 
 type Props = {
@@ -7,16 +8,55 @@ type Props = {
 };
 
 const UserProfileInfo = ({ user }: Props) => {
+  const inputFile = useRef(null);
+
+  const handleFileUpload = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append('userAvatar', file);
+      formData.append('userId', user.id);
+      const response = await axios.post(
+        'http://localhost:4000/uploads/avatar',
+        formData,
+      );
+      const fileLink = response.data.data;
+      await axios.put('http://localhost:4000/users/' + user.id, {
+        profilePic: fileLink,
+      });
+      if (response.data.success) {
+        window.location.reload();
+      } else {
+        alert('Error uploading file');
+      }
+    } catch (error) {
+      alert('Error uploading file');
+    }
+  };
+
+  const onAvatarClick = () => {
+    // `current` points to the mounted file input element
+    inputFile.current.click();
+  };
+
   return (
     <div>
       <div className='pb-1 sm:pb-6'>
         <div className='sm:flex-1'>
           <div>
+            <input
+              type='file'
+              id='file'
+              ref={inputFile}
+              style={{ display: 'none' }}
+              onChange={(e) => handleFileUpload(e.target.files[0])}
+            />
             <img
-              className='w-40 mb-2 rounded-full shadow-lg'
+              className='w-40 h-40 mb-2 rounded-full shadow-lg hover:opacity-30 hover:cursor-pointer'
               src={user.profilePic}
               alt=''
+              onClick={onAvatarClick}
             />
+
             <div className='flex items-center'>
               <h3 className='text-xl font-bold text-gray-900 sm:text-2xl'>
                 {user.firstName} {user.lastName}
