@@ -20,6 +20,10 @@ function PostDetailPage({}) {
   const [comments, setComments] = React.useState([]);
   const [newComment, setNewComment] = React.useState<string>('');
   const [mood, setMood] = React.useState<Mood>(moods[5]);
+  const [currentUserLikedPost, setCurrentUserLikedPost] =
+    React.useState<boolean>(false);
+  const [currentUserUnlikedPost, setCurrentUserUnlikedPost] =
+    React.useState<boolean>(false);
 
   const profilePic = window.localStorage.getItem('profilePic');
   const currentlyLoggedInUser = window.localStorage.getItem('userId');
@@ -53,8 +57,27 @@ function PostDetailPage({}) {
       postId: post.id,
       userId: currentlyLoggedInUser,
     });
+    setCurrentUserUnlikedPost(false);
+    setCurrentUserLikedPost(true);
+  };
 
-    return fetchPost();
+  const handleUnlikePost = async () => {
+    await axios.delete(`http://localhost:4000/likes`, {
+      data: {
+        postId: post.id,
+        userId: currentlyLoggedInUser,
+      },
+    });
+    setCurrentUserLikedPost(false);
+    setCurrentUserUnlikedPost(true);
+  };
+
+  const handleLikeButtonClick = () => {
+    if (userHasLikedThePost) {
+      handleUnlikePost();
+    } else {
+      handleLikePost();
+    }
   };
 
   React.useEffect(() => {
@@ -87,6 +110,11 @@ function PostDetailPage({}) {
     setMood(moods[5]);
   };
 
+  const userHasLikedThePost =
+    (post?.likes.map((like) => like.userId).includes(+currentlyLoggedInUser) ||
+      currentUserLikedPost) &&
+    !currentUserUnlikedPost;
+
   return (
     <MainLayout
       leftNav={
@@ -115,16 +143,16 @@ function PostDetailPage({}) {
                 </span>
                 <span className='flex items-center space-x-1 text-sm text-gray-500'>
                   <ThumbUpIcon
-                    onClick={handleLikePost}
+                    onClick={handleLikeButtonClick}
                     className={`w-5 h-5 text-${
-                      post?.likes
-                        .map((like) => like.userId)
-                        .includes(+currentlyLoggedInUser)
-                        ? 'red'
-                        : 'gray'
+                      userHasLikedThePost ? 'red' : 'gray'
                     }-500`}
                   />
-                  <span>{post.likes.length || 0}</span>
+                  <span>
+                    {userHasLikedThePost
+                      ? post.likes.length + 1
+                      : post.likes.length || 0}
+                  </span>
                 </span>
                 <span className='flex items-center space-x-1 text-sm text-gray-500'>
                   <ChatIcon className='w-5 h-5 text-gray-500' />
@@ -163,6 +191,10 @@ function PostDetailPage({}) {
                                 aria-hidden='true'
                               />
                             }
+                            <div className='flex items-center space-x-.5'>
+                              <ThumbUpIcon className={`w-5 h-5 text-red-500`} />
+                              <span className='text-xs'>100</span>
+                            </div>
                           </h3>
                           <p className='text-sm text-gray-500'>
                             {dayjs(comment.createdAt).fromNow()}
@@ -171,6 +203,11 @@ function PostDetailPage({}) {
                         <p className='text-sm text-gray-500'>
                           {comment.content}
                         </p>
+                        <div className='flex space-x-2'>
+                          <p className='text-sm text-blue-500 underline cursor-pointer'>
+                            like
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </li>
