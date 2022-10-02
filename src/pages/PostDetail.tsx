@@ -10,6 +10,7 @@ import { moods } from '../constants';
 import { Group, Mood, Post, User } from '../interfaces';
 import MainLayout from '../layout/MainLayout';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { ChatIcon, EyeIcon, ThumbUpIcon } from '@heroicons/react/solid';
 dayjs.extend(relativeTime);
 
 function PostDetailPage({}) {
@@ -21,25 +22,39 @@ function PostDetailPage({}) {
   const [mood, setMood] = React.useState<Mood>(moods[5]);
 
   const profilePic = window.localStorage.getItem('profilePic');
+  const currentlyLoggedInUser = window.localStorage.getItem('userId');
 
   const fetchData = async () => {
-    const postResponse = await fetch(`http://localhost:4000/posts/post/${id}`);
+    fetchPost();
     const groupResponse = await fetch('http://localhost:4000/groups');
     const commentResponse = await fetch(
       `http://localhost:4000/comments/post/${id}`,
     );
     const groupData = await groupResponse.json();
-    const postData = await postResponse.json();
     const commentsResponse = await commentResponse.json();
-    setPost(postData);
     setAllGroups(groupData);
     setComments(commentsResponse);
+  };
+
+  const fetchPost = async () => {
+    const postResponse = await fetch(`http://localhost:4000/posts/post/${id}`);
+    const postData = await postResponse.json();
+    setPost(postData);
   };
 
   const fetchUser = async (userId: number) => {
     const userResponse = await fetch(`http://localhost:4000/users/${userId}`);
     const userData = await userResponse.json();
     setUser(userData);
+  };
+
+  const handleLikePost = async () => {
+    await axios.post(`http://localhost:4000/likes`, {
+      postId: post.id,
+      userId: currentlyLoggedInUser,
+    });
+
+    return fetchPost();
   };
 
   React.useEffect(() => {
@@ -86,18 +101,36 @@ function PostDetailPage({}) {
         <div className='space-y-8'>
           <div className='p-4 bg-white rounded-lg shadow-sm'>
             <h1 className='mb-2 text-3xl font-semibold'>{post.title}</h1>
-            <span className='text-sm text-gray-500'>
-              {dayjs(post.createdAt).format('MMM DD, YYYY')}
-            </span>
-            <p>{post.content}</p>
-            <div>
-              {post.comments &&
-                post.comments.length &&
-                post.comments.map((comment) => (
-                  <div>
-                    <p>{comment}</p>
-                  </div>
-                ))}
+            <div className='space-y-4'>
+              <div className='flex items-center space-x-3'>
+                <span className='text-sm text-gray-500'>
+                  Published on {dayjs(post.createdAt).format('MMM DD, YYYY')}
+                </span>
+              </div>
+              <p>{post.content}</p>
+              <div className='flex space-x-4'>
+                <span className='flex items-center space-x-1 text-sm text-gray-500'>
+                  <EyeIcon className='w-5 h-5 text-gray-500' />
+                  <span>{post.viewCount}</span>
+                </span>
+                <span className='flex items-center space-x-1 text-sm text-gray-500'>
+                  <ThumbUpIcon
+                    onClick={handleLikePost}
+                    className={`w-5 h-5 text-${
+                      post?.likes
+                        .map((like) => like.userId)
+                        .includes(+currentlyLoggedInUser)
+                        ? 'red'
+                        : 'gray'
+                    }-500`}
+                  />
+                  <span>{post.likes.length || 0}</span>
+                </span>
+                <span className='flex items-center space-x-1 text-sm text-gray-500'>
+                  <ChatIcon className='w-5 h-5 text-gray-500' />
+                  <span>{comments?.length || 0}</span>
+                </span>
+              </div>
             </div>
           </div>
           <CommentEditor

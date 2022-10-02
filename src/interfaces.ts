@@ -15,7 +15,16 @@ export interface Post {
   tag: any;
   user: User;
   comments: [];
-  likes: [];
+  likes: Like[];
+}
+
+export interface Like {
+  commentId?: string;
+  createdAt: Date;
+  id: number;
+  postId?: number;
+  updatedAt: Date;
+  userId: number;
 }
 
 export interface User {

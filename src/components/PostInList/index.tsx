@@ -151,7 +151,7 @@ const PostInList = ({
               >
                 <ThumbUpIcon className='w-5 h-5' aria-hidden='true' />
                 <span className='font-medium text-gray-900'>
-                  {post.likes || 0}
+                  {post?.likes?.length || 0}
                 </span>
                 <span className='sr-only'>likes</span>
               </button>
