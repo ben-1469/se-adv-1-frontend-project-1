@@ -33,7 +33,7 @@ export interface User {
   lastName: string;
   password: string;
   username: string;
-  id: string;
+  id: number;
   profilePic?: string;
   bio?: string;
   location?: string;

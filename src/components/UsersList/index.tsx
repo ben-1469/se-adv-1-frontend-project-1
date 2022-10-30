@@ -12,7 +12,7 @@ type Props = {
 
 const UsersList = ({ users, title, viewAllLink }: Props) => {
   return (
-    <div className='sticky space-y-4 top-4'>
+    <div className='space-y-4 top-4'>
       <section aria-labelledby='who-to-follow-heading'>
         <div className='bg-white rounded-lg shadow'>
           <div className='p-6'>

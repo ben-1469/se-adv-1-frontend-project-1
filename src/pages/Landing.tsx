@@ -23,9 +23,12 @@ function LandingPage() {
     const groupResponse = await fetch('http://localhost:4000/groups');
     const groupData = await groupResponse.json();
     const postData = await postResponse.json();
-    const userData = await userResponse.json();
+    const userData: User[] = await userResponse.json();
+    const userDataWithoutLoggedInUser = userData.filter(
+      (user: User) => user.id !== Number(currentlyLoggedInUserId)
+    );
 
-    setAllUsers(userData);
+    setAllUsers(userDataWithoutLoggedInUser);
     setAllPosts(postData);
     setAllGroups(groupData);
   };

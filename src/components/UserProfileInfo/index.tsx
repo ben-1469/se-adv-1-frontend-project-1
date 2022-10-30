@@ -14,10 +14,10 @@ const UserProfileInfo = ({ user }: Props) => {
     try {
       const formData = new FormData();
       formData.append('userAvatar', file);
-      formData.append('userId', user.id);
+      formData.append('userId', String(user.id));
       const response = await axios.post(
         'http://localhost:4000/uploads/avatar',
-        formData,
+        formData
       );
       const fileLink = response.data.data;
       await axios.put('http://localhost:4000/users/' + user.id, {

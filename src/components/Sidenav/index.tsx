@@ -5,7 +5,7 @@ type Props = {};
 
 const Sidenav = (props: Props) => {
   return (
-    <nav aria-label='Sidebar' className='sticky top-4'>
+    <nav aria-label='Sidebar' className='top-4'>
       <div className='pb-8 space-y-1'>
         {navigation.map((item) => (
           <a
@@ -15,7 +15,7 @@ const Sidenav = (props: Props) => {
               item.current
                 ? 'bg-gray-200 text-gray-900'
                 : 'text-gray-600 hover:bg-gray-50',
-              'group flex items-center px-3 py-2 text-sm font-medium rounded-md',
+              'group flex items-center px-3 py-2 text-sm font-medium rounded-md'
             )}
             aria-current={item.current ? 'page' : undefined}
           >
@@ -24,7 +24,7 @@ const Sidenav = (props: Props) => {
                 item.current
                   ? 'text-gray-500'
                   : 'text-gray-400 group-hover:text-gray-500',
-                'flex-shrink-0 -ml-1 mr-3 h-6 w-6',
+                'flex-shrink-0 -ml-1 mr-3 h-6 w-6'
               )}
               aria-hidden='true'
             />
