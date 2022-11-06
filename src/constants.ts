@@ -71,4 +71,5 @@ export const FRIEND_STATUS_MAP = {
   NON_FRIEND: 'NON_FRIEND',
   FRIEND: 'FRIEND',
   PENDING: 'PENDING',
+  SENT: 'SENT',
 };
