@@ -1,8 +1,8 @@
-import { PlusSmIcon } from '@heroicons/react/solid';
+import { PlusSmIcon, XIcon } from '@heroicons/react/solid';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { DEFAULT_PROFILE_PICTURE } from '../../constants';
+import { DEFAULT_PROFILE_PICTURE, FRIEND_STATUS_MAP } from '../../constants';
 import { User } from '../../interfaces';
 
 type Props = {
@@ -11,6 +11,23 @@ type Props = {
 
 const UserInList = ({ user }: Props) => {
   const currentlyLoggedInUserId = window.localStorage.getItem('userId');
+  const [friendStatus, setFriendStatus] = useState(
+    FRIEND_STATUS_MAP.NON_FRIEND
+  );
+
+  const checkIfFriends = async () => {
+    const response = await axios.post(
+      `http://localhost:4000/users/friends/lookup`,
+      {
+        userId: currentlyLoggedInUserId,
+        friendId: user.id,
+      }
+    );
+    if (response.data.status) {
+      setFriendStatus(response.data.status);
+    }
+  };
+
   const sendFriendRequest = async () => {
     const response = await axios.post(
       'http://localhost:4000/users/friends/request',
@@ -20,23 +37,66 @@ const UserInList = ({ user }: Props) => {
       }
     );
     if (response.data.success) {
-      console.log(response.data);
+      checkIfFriends();
     }
   };
 
   useEffect(() => {
-    const checkIfFriends = async () => {
-      const response = await axios.post(
-        `http://localhost:4000/users/friends/lookup`,
-        {
-          userId: currentlyLoggedInUserId,
-          friendId: user.id,
-        }
-      );
-      console.log(response);
-    };
     checkIfFriends();
   }, []);
+
+  const cancelFriendRequest = async () => {
+    const response = await axios.delete(
+      'http://localhost:4000/users/friends/request',
+      {
+        data: {
+          userId: currentlyLoggedInUserId,
+          friendId: user.id,
+        },
+      }
+    );
+    if (response.data.success) {
+      checkIfFriends();
+    }
+  };
+
+  const renderButton = () => {
+    switch (friendStatus) {
+      case FRIEND_STATUS_MAP.NON_FRIEND:
+        return (
+          <button
+            type='button'
+            onClick={() => sendFriendRequest()}
+            className='inline-flex items-center px-3 py-0.5 rounded-full bg-rose-50 text-sm font-medium text-rose-700 hover:bg-rose-100'
+          >
+            <PlusSmIcon
+              className='-ml-1 mr-0.5 h-5 w-5 text-rose-400'
+              aria-hidden='true'
+            />
+            <span>Friend</span>
+          </button>
+        );
+      case FRIEND_STATUS_MAP.PENDING:
+        return (
+          <button
+            type='button'
+            onClick={() => cancelFriendRequest()}
+            className='inline-flex items-center px-3 py-0.5 rounded-full bg-orange-50 text-sm font-medium text-orange-700 hover:bg-orange-100'
+          >
+            <XIcon
+              className='-ml-1 mr-0.5 h-5 w-5 text-orange-400'
+              aria-hidden='true'
+            />
+            <span>Request</span>
+          </button>
+        );
+      case FRIEND_STATUS_MAP.FRIEND:
+        return <p>friend</p>;
+      default:
+        return <p>error</p>;
+    }
+  };
+
   return (
     <li key={user.id} className='flex items-center py-4 space-x-3'>
       <div className='flex-shrink-0'>
@@ -56,19 +116,7 @@ const UserInList = ({ user }: Props) => {
           <Link to={`/user/${user.id}`}>{'@' + user.username}</Link>
         </p>
       </div>
-      <div className='flex-shrink-0'>
-        <button
-          type='button'
-          onClick={() => sendFriendRequest()}
-          className='inline-flex items-center px-3 py-0.5 rounded-full bg-rose-50 text-sm font-medium text-rose-700 hover:bg-rose-100'
-        >
-          <PlusSmIcon
-            className='-ml-1 mr-0.5 h-5 w-5 text-rose-400'
-            aria-hidden='true'
-          />
-          <span>Friend</span>
-        </button>
-      </div>
+      <div className='flex-shrink-0'>{renderButton()}</div>
     </li>
   );
 };
